@@ -27,4 +27,5 @@ public class User {
 	String password;
 	String fullName;
 	LocalDate dob;
+	String role;
 }

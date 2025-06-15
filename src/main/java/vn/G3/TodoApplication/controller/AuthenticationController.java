@@ -2,6 +2,12 @@ package vn.G3.TodoApplication.controller;
 
 import java.text.ParseException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Authentication;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,11 +19,19 @@ import vn.G3.TodoApplication.dto.request.token.IntrospectRequest;
 import vn.G3.TodoApplication.dto.response.ApiResponse;
 import vn.G3.TodoApplication.dto.response.AuthenticationResponse;
 import vn.G3.TodoApplication.dto.response.token.IntrospectResponse;
+import vn.G3.TodoApplication.security.JwtUtils;
 import vn.G3.TodoApplication.service.AuthenticationService;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import vn.G3.TodoApplication.security.JwtUtils;
 
 @RestController
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtUtils jwtUtils;
 
     public AuthenticationController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
@@ -25,12 +39,25 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ApiResponse<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
-        ApiResponse<AuthenticationResponse> apiResponse = new ApiResponse<>();
+        System.out.println("Login request: " + request.getUsername());
+        var auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(), request.getPassword()));
 
-        AuthenticationResponse result = this.authenticationService.checkLogin(request);
-        apiResponse.setFiel(result);
-        apiResponse.setMessage("login successful");
-        return apiResponse;
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        System.out.println("Authenticated: " + userDetails.getUsername());
+
+        String token = jwtUtils.generateToken(userDetails);
+        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
+        authenticationResponse.setAuthented(true);
+        authenticationResponse.setToken(token);
+
+        return ApiResponse.<AuthenticationResponse>builder()
+
+                .fiel(authenticationResponse)
+                .message("success")
+                .code(1000)
+                .build();
 
     }
 

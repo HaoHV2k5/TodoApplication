@@ -13,8 +13,12 @@ import vn.G3.TodoApplication.service.UserService;
 import java.util.List;
 
 import org.apache.catalina.connector.Response;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 
 @RestController
 public class UserController {
@@ -38,6 +42,19 @@ public class UserController {
 		apiResponse.setMessage("get user successfully");
 		apiResponse.setFiel(this.userService.getUser());
 		return apiResponse;
+	}
+
+	@GetMapping
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	public ResponseEntity<?> getAll(Authentication authentication) {
+		boolean isAdmin = authentication.getAuthorities().stream()
+				.anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+
+		if (isAdmin) {
+			return ResponseEntity.ok(userService.findAllUsersAndAdmins());
+		} else {
+			return ResponseEntity.ok(userService.findOnlyUsers());
+		}
 	}
 
 }

@@ -40,4 +40,12 @@ public class UserService {
 		return list;
 	}
 
+	public List<User> findAllUsersAndAdmins() {
+		return userRepository.findAll();
+	}
+
+	public Object findOnlyUsers() {
+		return userRepository.findByRole("ROLE_USER");
+	}
+
 }
