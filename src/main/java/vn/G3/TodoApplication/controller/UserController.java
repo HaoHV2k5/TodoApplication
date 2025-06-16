@@ -13,6 +13,7 @@ import vn.G3.TodoApplication.service.UserService;
 import java.util.List;
 
 import org.apache.catalina.connector.Response;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,25 +37,32 @@ public class UserController {
 		return apiResponse;
 	}
 
-	@GetMapping("/users")
-	public ApiResponse<List<User>> getUser() {
-		ApiResponse<List<User>> apiResponse = new ApiResponse<>();
-		apiResponse.setMessage("get user successfully");
-		apiResponse.setFiel(this.userService.getUser());
-		return apiResponse;
-	}
+	// @GetMapping("/users")
+	// public ApiResponse<List<User>> getUser() {
+	// ApiResponse<List<User>> apiResponse = new ApiResponse<>();
+	// apiResponse.setMessage("get user successfully");
+	// apiResponse.setFiel(this.userService.getUser());
+	// return apiResponse;
+	// }
 
-	@GetMapping
+	@GetMapping("/users")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public ResponseEntity<?> getAll(Authentication authentication) {
-		boolean isAdmin = authentication.getAuthorities().stream()
-				.anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
 
-		if (isAdmin) {
-			return ResponseEntity.ok(userService.findAllUsersAndAdmins());
-		} else {
-			return ResponseEntity.ok(userService.findOnlyUsers());
+		try {
+			boolean isAdmin = authentication.getAuthorities().stream()
+					.anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+
+			if (isAdmin) {
+				return ResponseEntity.ok(userService.findAllUsersAndAdmins());
+			} else {
+				return ResponseEntity.ok(userService.findOnlyUsers());
+			}
+		} catch (Exception e) {
+
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username or password incorrect");
 		}
+
 	}
 
 }

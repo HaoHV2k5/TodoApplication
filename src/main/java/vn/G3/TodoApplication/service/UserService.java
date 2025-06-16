@@ -44,7 +44,7 @@ public class UserService {
 		return userRepository.findAll();
 	}
 
-	public Object findOnlyUsers() {
+	public List<User> findOnlyUsers() {
 		return userRepository.findByRole("ROLE_USER");
 	}
 
