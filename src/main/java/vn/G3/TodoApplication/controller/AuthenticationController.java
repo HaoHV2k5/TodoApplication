@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,8 @@ import vn.G3.TodoApplication.dto.request.token.IntrospectRequest;
 import vn.G3.TodoApplication.dto.response.ApiResponse;
 import vn.G3.TodoApplication.dto.response.AuthenticationResponse;
 import vn.G3.TodoApplication.dto.response.token.IntrospectResponse;
+import vn.G3.TodoApplication.exception.AppException;
+import vn.G3.TodoApplication.exception.ErrorCode;
 import vn.G3.TodoApplication.security.JwtUtils;
 import vn.G3.TodoApplication.service.AuthenticationService;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,25 +42,27 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ApiResponse<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
-        System.out.println("Login request: " + request.getUsername());
-        var auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsername(), request.getPassword()));
+        try {
+            var auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getUsername(), request.getPassword()));
 
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        System.out.println("Authenticated: " + userDetails.getUsername());
+            UserDetails userDetails = (UserDetails) auth.getPrincipal();
 
-        String token = jwtUtils.generateToken(userDetails);
-        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
-        authenticationResponse.setAuthented(true);
-        authenticationResponse.setToken(token);
+            String token = jwtUtils.generateToken(userDetails);
+            AuthenticationResponse authenticationResponse = new AuthenticationResponse();
+            authenticationResponse.setAuthented(true);
+            authenticationResponse.setToken(token);
 
-        return ApiResponse.<AuthenticationResponse>builder()
+            return ApiResponse.<AuthenticationResponse>builder()
 
-                .fiel(authenticationResponse)
-                .message("success")
-                .code(1000)
-                .build();
+                    .fiel(authenticationResponse)
+                    .message("success")
+                    .code(1000)
+                    .build();
+        } catch (BadCredentialsException e) {
+            throw new AppException(ErrorCode.PASSWORD_INVALID);
+        }
 
     }
 

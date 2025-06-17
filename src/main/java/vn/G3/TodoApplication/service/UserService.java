@@ -6,7 +6,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import vn.G3.TodoApplication.dto.request.authentication.AuthenticationRequest;
 import vn.G3.TodoApplication.dto.request.user.UserRequest;
 import vn.G3.TodoApplication.entity.User;
 import vn.G3.TodoApplication.mapper.User.UserMapper;

@@ -37,7 +37,7 @@ public class UserController {
 		return apiResponse;
 	}
 
-	// @GetMapping("/users")
+	// @GetMapping("/userss")
 	// public ApiResponse<List<User>> getUser() {
 	// ApiResponse<List<User>> apiResponse = new ApiResponse<>();
 	// apiResponse.setMessage("get user successfully");
