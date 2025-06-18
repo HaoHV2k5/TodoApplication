@@ -5,22 +5,26 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.ServletException;
 import vn.G3.TodoApplication.dto.request.task.TaskCreateRequest;
 import vn.G3.TodoApplication.dto.request.task.TaskRequest;
+import vn.G3.TodoApplication.dto.request.task.TaskUpdateRequest;
 import vn.G3.TodoApplication.dto.response.ApiResponse;
 import vn.G3.TodoApplication.dto.response.task.TaskResponse;
-import vn.G3.TodoApplication.entity.Task;
+
 import vn.G3.TodoApplication.service.TaskService;
 
 import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+
 import org.springframework.security.core.Authentication;
 // import org.springframework.scheduling.config.Task;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.PostMapping;
+
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 public class TaskController {
@@ -44,6 +48,15 @@ public class TaskController {
         TaskResponse taskResponse = this.taskService.createTask(request, username);
         ApiResponse<TaskResponse> apiResponse = new ApiResponse<>();
         apiResponse.setMessage("tao task thanh cong");
+        apiResponse.setFiel(taskResponse);
+        return apiResponse;
+    }
+
+    @PatchMapping("tasks/{id}")
+    public ApiResponse<TaskResponse> updateTask(@PathVariable String id, @RequestBody TaskUpdateRequest request) {
+        TaskResponse taskResponse = this.taskService.updateTask(request, id);
+        ApiResponse<TaskResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setMessage("update success");
         apiResponse.setFiel(taskResponse);
         return apiResponse;
     }

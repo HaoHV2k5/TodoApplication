@@ -10,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import vn.G3.TodoApplication.dto.request.task.TaskCreateRequest;
+import vn.G3.TodoApplication.dto.request.task.TaskUpdateRequest;
 import vn.G3.TodoApplication.dto.response.task.TaskResponse;
 import vn.G3.TodoApplication.entity.Task;
 import vn.G3.TodoApplication.entity.User;
@@ -25,8 +26,6 @@ public class TaskService {
     private TaskRepository taskRepository;
     private UserRepository userRepository;
     private TaskMapper taskMapper;
-    @Autowired
-    private JwtUtils jwtUtils;
 
     public TaskService(TaskRepository taskRepository, UserRepository userRepository, TaskMapper taskMapper) {
         this.taskRepository = taskRepository;
@@ -47,6 +46,13 @@ public class TaskService {
         task.setUser(user);
         this.taskRepository.save(task);
 
+        return this.taskMapper.toTaskResponse(task);
+    }
+
+    public TaskResponse updateTask(TaskUpdateRequest request, String id) {
+        Task task = this.taskRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND));
+        this.taskMapper.updateTaskFromTaskUpdateRequest(request, task);
+        this.taskRepository.save(task);
         return this.taskMapper.toTaskResponse(task);
     }
 }
