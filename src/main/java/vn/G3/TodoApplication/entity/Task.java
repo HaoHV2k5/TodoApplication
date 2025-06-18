@@ -14,6 +14,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import vn.G3.TodoApplication.dto.request.task.Prioritize;
 
 @Entity
 @Data
@@ -28,11 +29,12 @@ public class Task {
     String id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_name", referencedColumnName = "username")
     User user;
 
     String title;
     String detailInfo;
-    String prioritize;
+    Prioritize prioritize;
     LocalTime time;
+
 }

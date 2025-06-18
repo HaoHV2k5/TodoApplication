@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import vn.G3.TodoApplication.dto.request.user.UserRequest;
 import vn.G3.TodoApplication.entity.User;
+import vn.G3.TodoApplication.exception.AppException;
+import vn.G3.TodoApplication.exception.ErrorCode;
 import vn.G3.TodoApplication.mapper.User.UserMapper;
 import vn.G3.TodoApplication.repository.UserRepository;
 
@@ -26,7 +28,7 @@ public class UserService {
 		User user = this.userMapper.toUser(request);
 
 		if (this.userRepository.existsByUsername(request.getUsername())) {
-			throw new RuntimeException("da ton tai username");
+			throw new AppException(ErrorCode.EXiST_USER);
 		}
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 		user.setPassword(passwordEncoder.encode(request.getPassword()));

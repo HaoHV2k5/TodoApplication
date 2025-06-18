@@ -2,17 +2,25 @@ package vn.G3.TodoApplication.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.ServletException;
+import vn.G3.TodoApplication.dto.request.task.TaskCreateRequest;
 import vn.G3.TodoApplication.dto.request.task.TaskRequest;
+import vn.G3.TodoApplication.dto.response.ApiResponse;
+import vn.G3.TodoApplication.dto.response.task.TaskResponse;
 import vn.G3.TodoApplication.entity.Task;
 import vn.G3.TodoApplication.service.TaskService;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 // import org.springframework.scheduling.config.Task;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 public class TaskController {
@@ -24,8 +32,20 @@ public class TaskController {
 
     @GetMapping("/tasks")
     public ResponseEntity<?> getTask(@RequestBody TaskRequest request) {
-        List<Task> list = this.taskService.getTasks(request.getUsername());
+        List<TaskResponse> list = this.taskService.getTasks(request.getUsername());
         return ResponseEntity.ok().body(list);
+    }
+
+    @PostMapping("/tasks")
+
+    public ApiResponse<TaskResponse> createTask(@RequestBody TaskCreateRequest request, Authentication authentication)
+            throws ServletException, IOException {
+        String username = authentication.getName();
+        TaskResponse taskResponse = this.taskService.createTask(request, username);
+        ApiResponse<TaskResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setMessage("tao task thanh cong");
+        apiResponse.setFiel(taskResponse);
+        return apiResponse;
     }
 
 }

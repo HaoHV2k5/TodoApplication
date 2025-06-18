@@ -4,7 +4,8 @@ public enum ErrorCode {
     PASSWORD_INVALID(2, "password is invalid"),
     USERNAME_INVALID(1, "username is invalid"),
     AUTHENTICATION_INVALID(3, "You do not have permission to access this resource"),
-    AUTHORIZED_INVALID(4, "Unauthorized, Please Login!");
+    AUTHORIZED_INVALID(4, "Unauthorized, Please Login!"),
+    EXiST_USER(5, "User exist! Please try again");
 
     private int code;
     private String message;
