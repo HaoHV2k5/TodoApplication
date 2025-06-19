@@ -5,8 +5,9 @@ public enum ErrorCode {
     USERNAME_INVALID(1, "username is invalid"),
     AUTHENTICATION_INVALID(3, "You do not have permission to access this resource"),
     AUTHORIZED_INVALID(4, "Unauthorized, Please Login!"),
-    EXiST_USER(5, "User exist! Please try again"),
-    NOT_FOUND(6, "Task not found!");
+    EXIST_USER(5, "User exist! Please try again"),
+    NOT_FOUND(6, "Task not found!"),
+    USER_NOTFOUND(7, "User not found!");
 
     private int code;
     private String message;

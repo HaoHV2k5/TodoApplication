@@ -28,7 +28,7 @@ public class UserService {
 		User user = this.userMapper.toUser(request);
 
 		if (this.userRepository.existsByUsername(request.getUsername())) {
-			throw new AppException(ErrorCode.EXiST_USER);
+			throw new AppException(ErrorCode.EXIST_USER);
 		}
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 		user.setPassword(passwordEncoder.encode(request.getPassword()));

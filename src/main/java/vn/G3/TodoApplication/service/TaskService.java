@@ -42,7 +42,7 @@ public class TaskService {
     public TaskResponse createTask(TaskCreateRequest request, String username) {
         Task task = this.taskMapper.toTask(request);
         var user = this.userRepository.findByUsername(username)
-                .orElseThrow(() -> new AppException(ErrorCode.EXiST_USER));
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
         task.setUser(user);
         this.taskRepository.save(task);
 

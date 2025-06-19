@@ -12,12 +12,10 @@ import vn.G3.TodoApplication.dto.response.task.TaskResponse;
 import vn.G3.TodoApplication.service.TaskService;
 
 import java.io.IOException;
+
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
-
 import org.springframework.security.core.Authentication;
-// import org.springframework.scheduling.config.Task;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,9 +33,12 @@ public class TaskController {
     }
 
     @GetMapping("/tasks")
-    public ResponseEntity<?> getTask(@RequestBody TaskRequest request) {
+    public ApiResponse<List<TaskResponse>> getTask(@RequestBody TaskRequest request) {
         List<TaskResponse> list = this.taskService.getTasks(request.getUsername());
-        return ResponseEntity.ok().body(list);
+        ApiResponse<List<TaskResponse>> apiResponse = new ApiResponse<>();
+        apiResponse.setMessage("get tasks success");
+        apiResponse.setFiel(list);
+        return apiResponse;
     }
 
     @PostMapping("/tasks")
