@@ -6,14 +6,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import vn.G3.TodoApplication.dto.request.user.UserRequest;
 import vn.G3.TodoApplication.dto.response.ApiResponse;
+import vn.G3.TodoApplication.dto.response.user.UserResponse;
 import vn.G3.TodoApplication.entity.User;
 import vn.G3.TodoApplication.exception.ErrorCode;
 import vn.G3.TodoApplication.service.UserService;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -27,7 +26,7 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@PostMapping("/users")
+	@PostMapping("/register/users")
 	public ApiResponse<User> createUser(@RequestBody UserRequest request) {
 		ApiResponse<User> apiResponse = new ApiResponse<>();
 		apiResponse.setMessage("tao user thanh cong");
@@ -35,18 +34,11 @@ public class UserController {
 		return apiResponse;
 	}
 
-	// @GetMapping("/userss")
-	// public ApiResponse<List<User>> getUser() {
-	// ApiResponse<List<User>> apiResponse = new ApiResponse<>();
-	// apiResponse.setMessage("get user successfully");
-	// apiResponse.setFiel(this.userService.getUser());
-	// return apiResponse;
-	// }
-
 	@GetMapping("/users")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ApiResponse<List<User>> getAll(Authentication authentication) {
-		ApiResponse<List<User>> apiResponse = new ApiResponse<>();
+	public ApiResponse<List<UserResponse>> getAll(Authentication authentication) {
+		ApiResponse<List<UserResponse>> apiResponse = new ApiResponse<>();
+		apiResponse.setMessage("lay danh sach thanh cong");
 		try {
 			boolean isAdmin = authentication.getAuthorities().stream()
 					.anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));

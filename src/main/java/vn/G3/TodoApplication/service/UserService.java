@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import vn.G3.TodoApplication.dto.request.user.UserRequest;
+import vn.G3.TodoApplication.dto.response.user.UserResponse;
 import vn.G3.TodoApplication.entity.User;
 import vn.G3.TodoApplication.exception.AppException;
 import vn.G3.TodoApplication.exception.ErrorCode;
@@ -41,12 +42,14 @@ public class UserService {
 		return list;
 	}
 
-	public List<User> findAllUsersAndAdmins() {
-		return userRepository.findAll();
+	public List<UserResponse> findAllUsersAndAdmins() {
+		List<UserResponse> list = this.userMapper.toListUserResponses(userRepository.findAll());
+		return list;
 	}
 
-	public List<User> findOnlyUsers() {
-		return userRepository.findByRole("ROLE_USER");
+	public List<UserResponse> findOnlyUsers() {
+		List<UserResponse> list = this.userMapper.toListUserResponses(userRepository.findByRole("ROLE_USER"));
+		return list;
 	}
 
 }

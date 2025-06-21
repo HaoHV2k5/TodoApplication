@@ -1,5 +1,7 @@
 package vn.G3.TodoApplication.mapper.User;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 
 import vn.G3.TodoApplication.dto.request.user.UserRequest;
@@ -11,4 +13,6 @@ public interface UserMapper {
 	UserResponse toUserResponse(User user);
 
 	User toUser(UserRequest userRequest);
+
+	List<UserResponse> toListUserResponses(List<User> list);
 }

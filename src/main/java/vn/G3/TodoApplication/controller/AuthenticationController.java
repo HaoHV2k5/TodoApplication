@@ -24,9 +24,6 @@ import vn.G3.TodoApplication.exception.AppException;
 import vn.G3.TodoApplication.exception.ErrorCode;
 import vn.G3.TodoApplication.security.JwtUtils;
 import vn.G3.TodoApplication.service.AuthenticationService;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import vn.G3.TodoApplication.security.JwtUtils;
 
 @RestController
 public class AuthenticationController {
