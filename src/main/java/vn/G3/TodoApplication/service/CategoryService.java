@@ -49,4 +49,12 @@ public class CategoryService {
 
     }
 
+    public CategoryResponse deleteCategory(String id) {
+        var category = this.categoryRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOTFOUND));
+        this.categoryRepository.deleteById(id);
+        CategoryResponse categoryResponse = this.categoryMapper.toCategoryResponse(category);
+        return categoryResponse;
+    }
+
 }

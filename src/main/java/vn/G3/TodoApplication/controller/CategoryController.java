@@ -11,6 +11,7 @@ import vn.G3.TodoApplication.dto.response.ApiResponse;
 import vn.G3.TodoApplication.dto.response.category.CategoryResponse;
 import vn.G3.TodoApplication.service.CategoryService;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -38,6 +39,15 @@ public class CategoryController {
         CategoryResponse categoryResponse = this.categoryService.updateCategory(id, request);
         return ApiResponse.<CategoryResponse>builder()
                 .message("update Category success")
+                .fiel(categoryResponse)
+                .build();
+    }
+
+    @DeleteMapping("/deleteCategory/{id}")
+    public ApiResponse<CategoryResponse> deleteCategory(@PathVariable String id) {
+        CategoryResponse categoryResponse = this.categoryService.deleteCategory(id);
+        return ApiResponse.<CategoryResponse>builder()
+                .message("delete Category success")
                 .fiel(categoryResponse)
                 .build();
     }
