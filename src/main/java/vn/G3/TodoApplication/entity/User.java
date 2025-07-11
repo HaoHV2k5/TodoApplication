@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,7 +33,9 @@ public class User {
 	String id;
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	List<Task> tasks = new ArrayList<>();
+	@Size(min = 6, max = 20, message = "Length Username is not valid")
 	String username;
+	@Size(min = 6, max = 20, message = "Length Password is not valid")
 	String password;
 	String fullName;
 	LocalDate dob;

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.ServletException;
@@ -33,9 +34,9 @@ public class TaskService {
         this.taskMapper = taskMapper;
     }
 
-    public List<TaskResponse> getTasks(String username) {
+    public List<TaskResponse> getTasks(Authentication authentication) {
 
-        List<Task> list = this.taskRepository.findByUser_Username(username);
+        List<Task> list = this.taskRepository.findByUser_Username(authentication.getName());
         return this.taskMapper.toListTaskResponses(list);
     }
 

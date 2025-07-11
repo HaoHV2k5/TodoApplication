@@ -2,6 +2,7 @@ package vn.G3.TodoApplication.entity;
 
 import java.time.LocalTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,7 +32,7 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "user_name", referencedColumnName = "username")
     User user;
-
+    @Column(nullable = false)
     String title;
     String detailInfo;
     Prioritize prioritize;

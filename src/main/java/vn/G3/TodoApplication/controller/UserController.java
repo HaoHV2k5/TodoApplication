@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import vn.G3.TodoApplication.dto.request.user.UserRequest;
 import vn.G3.TodoApplication.dto.response.ApiResponse;
 import vn.G3.TodoApplication.dto.response.user.UserResponse;
@@ -27,7 +28,7 @@ public class UserController {
 	}
 
 	@PostMapping("/register/users")
-	public ApiResponse<User> createUser(@RequestBody UserRequest request) {
+	public ApiResponse<User> createUser(@RequestBody @Valid UserRequest request) {
 		ApiResponse<User> apiResponse = new ApiResponse<>();
 		apiResponse.setMessage("tao user thanh cong");
 		apiResponse.setFiel(this.userService.createUserHandel(request));

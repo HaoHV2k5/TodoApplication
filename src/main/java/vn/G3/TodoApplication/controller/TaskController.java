@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.ServletException;
 import vn.G3.TodoApplication.dto.request.task.TaskCreateRequest;
-import vn.G3.TodoApplication.dto.request.task.TaskRequest;
+
 import vn.G3.TodoApplication.dto.request.task.TaskUpdateRequest;
 import vn.G3.TodoApplication.dto.response.ApiResponse;
 import vn.G3.TodoApplication.dto.response.task.TaskResponse;
@@ -33,8 +33,8 @@ public class TaskController {
     }
 
     @GetMapping("/tasks")
-    public ApiResponse<List<TaskResponse>> getTask(@RequestBody TaskRequest request) {
-        List<TaskResponse> list = this.taskService.getTasks(request.getUsername());
+    public ApiResponse<List<TaskResponse>> getTask(Authentication authentication) {
+        List<TaskResponse> list = this.taskService.getTasks(authentication);
         ApiResponse<List<TaskResponse>> apiResponse = new ApiResponse<>();
         apiResponse.setMessage("get tasks success");
         apiResponse.setFiel(list);
