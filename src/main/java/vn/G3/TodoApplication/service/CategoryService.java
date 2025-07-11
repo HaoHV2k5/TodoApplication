@@ -7,8 +7,11 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import vn.G3.TodoApplication.dto.request.category.CreateCategoryRequest;
+import vn.G3.TodoApplication.dto.request.category.UpdateCategoryRequest;
 import vn.G3.TodoApplication.dto.response.category.CategoryResponse;
 import vn.G3.TodoApplication.entity.Category;
+import vn.G3.TodoApplication.exception.AppException;
+import vn.G3.TodoApplication.exception.ErrorCode;
 import vn.G3.TodoApplication.mapper.category.CategoryMapper;
 import vn.G3.TodoApplication.repository.CategoryRepository;
 
@@ -33,4 +36,17 @@ public class CategoryService {
                 .toCategoryResponse(category);
         return categoryResponse;
     }
+
+    public CategoryResponse updateCategory(String id, UpdateCategoryRequest request) {
+        var category = this.categoryRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOTFOUND));
+
+        String categoryName = request.getCategoryName().trim();
+        category.setCategoryName(categoryName);
+        this.categoryRepository.save(category);
+        CategoryResponse categoryResponse = this.categoryMapper.toCategoryResponse(category);
+        return categoryResponse;
+
+    }
+
 }

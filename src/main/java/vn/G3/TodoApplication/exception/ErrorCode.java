@@ -7,7 +7,8 @@ public enum ErrorCode {
     AUTHORIZED_INVALID(4, "Unauthorized, Please Login!"),
     EXIST_USER(101, "User exist! Please try again"),
     NOT_FOUND(102, "Task not found!"),
-    USER_NOTFOUND(103, "User not found!");
+    USER_NOTFOUND(103, "User not found!"),
+    CATEGORY_NOTFOUND(104, "Category not found!");
 
     private int code;
     private String message;

@@ -53,7 +53,7 @@ public class TaskController {
         return apiResponse;
     }
 
-    @PatchMapping("tasks/{id}")
+    @PatchMapping("/tasks/{id}")
     public ApiResponse<TaskResponse> updateTask(@PathVariable String id, @RequestBody TaskUpdateRequest request) {
         TaskResponse taskResponse = this.taskService.updateTask(request, id);
         ApiResponse<TaskResponse> apiResponse = new ApiResponse<>();
