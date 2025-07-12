@@ -1,11 +1,14 @@
 package vn.G3.TodoApplication.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import vn.G3.TodoApplication.dto.request.category.CategoryGetRequest;
 import vn.G3.TodoApplication.dto.request.category.CreateCategoryRequest;
 import vn.G3.TodoApplication.dto.request.category.UpdateCategoryRequest;
 import vn.G3.TodoApplication.dto.response.category.CategoryResponse;
@@ -55,6 +58,14 @@ public class CategoryService {
         this.categoryRepository.deleteById(id);
         CategoryResponse categoryResponse = this.categoryMapper.toCategoryResponse(category);
         return categoryResponse;
+    }
+
+    public List<CategoryResponse> getCategory() {
+
+        List<Category> list = this.categoryRepository.findAll();
+        List<CategoryResponse> result = this.categoryMapper.toListCategoryResponses(list);
+        return result;
+
     }
 
 }

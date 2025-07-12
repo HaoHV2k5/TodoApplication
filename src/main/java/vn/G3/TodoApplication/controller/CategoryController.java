@@ -5,13 +5,17 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import vn.G3.TodoApplication.dto.request.category.CategoryGetRequest;
 import vn.G3.TodoApplication.dto.request.category.CreateCategoryRequest;
 import vn.G3.TodoApplication.dto.request.category.UpdateCategoryRequest;
 import vn.G3.TodoApplication.dto.response.ApiResponse;
 import vn.G3.TodoApplication.dto.response.category.CategoryResponse;
 import vn.G3.TodoApplication.service.CategoryService;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -49,6 +53,15 @@ public class CategoryController {
         return ApiResponse.<CategoryResponse>builder()
                 .message("delete Category success")
                 .fiel(categoryResponse)
+                .build();
+    }
+
+    @GetMapping("/category")
+    public ApiResponse<List<CategoryResponse>> getCategory() {
+        List<CategoryResponse> result = this.categoryService.getCategory();
+        return ApiResponse.<List<CategoryResponse>>builder()
+                .message("get list category success")
+                .fiel(result)
                 .build();
     }
 
