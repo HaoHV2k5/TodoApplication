@@ -6,10 +6,12 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import vn.G3.TodoApplication.dto.request.category.CategoryGetRequest;
+import vn.G3.TodoApplication.dto.request.category.CategoryGetTask;
 import vn.G3.TodoApplication.dto.request.category.CreateCategoryRequest;
 import vn.G3.TodoApplication.dto.request.category.UpdateCategoryRequest;
 import vn.G3.TodoApplication.dto.response.ApiResponse;
 import vn.G3.TodoApplication.dto.response.category.CategoryResponse;
+import vn.G3.TodoApplication.dto.response.task.TaskResponse;
 import vn.G3.TodoApplication.service.CategoryService;
 
 import java.util.List;
@@ -61,6 +63,15 @@ public class CategoryController {
         List<CategoryResponse> result = this.categoryService.getCategory();
         return ApiResponse.<List<CategoryResponse>>builder()
                 .message("get list category success")
+                .fiel(result)
+                .build();
+    }
+
+    @GetMapping("/categorys")
+    public ApiResponse<List<TaskResponse>> getTaskFollowCategory(@RequestBody CategoryGetTask request) {
+        List<TaskResponse> result = this.categoryService.getTaskFollowCategory(request);
+        return ApiResponse.<List<TaskResponse>>builder()
+                .message("get list task by categoryName")
                 .fiel(result)
                 .build();
     }

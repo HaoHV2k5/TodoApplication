@@ -26,4 +26,6 @@ public class TaskCreateRequest {
     Prioritize prioritize;
     @Column(nullable = false)
     LocalTime time;
+    @Column(nullable = false)
+    String categoryName;
 }

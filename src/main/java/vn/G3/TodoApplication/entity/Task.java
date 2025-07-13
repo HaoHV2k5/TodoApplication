@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,5 +38,7 @@ public class Task {
     String detailInfo;
     Prioritize prioritize;
     LocalTime time;
-
+    @ManyToOne
+    @JoinColumn(name = "category_cateName", referencedColumnName = "categoryName")
+    Category category;
 }

@@ -2,6 +2,7 @@ package vn.G3.TodoApplication.dto.response.task;
 
 import java.time.LocalTime;
 
+import jakarta.persistence.Column;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,4 +23,6 @@ public class TaskResponse {
     Prioritize prioritize;
     LocalTime time;
     String username;
+
+    String categoryName;
 }

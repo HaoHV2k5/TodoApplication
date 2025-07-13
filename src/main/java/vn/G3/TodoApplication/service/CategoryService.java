@@ -9,14 +9,19 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import vn.G3.TodoApplication.dto.request.category.CategoryGetRequest;
+import vn.G3.TodoApplication.dto.request.category.CategoryGetTask;
 import vn.G3.TodoApplication.dto.request.category.CreateCategoryRequest;
 import vn.G3.TodoApplication.dto.request.category.UpdateCategoryRequest;
 import vn.G3.TodoApplication.dto.response.category.CategoryResponse;
+import vn.G3.TodoApplication.dto.response.task.TaskResponse;
 import vn.G3.TodoApplication.entity.Category;
+import vn.G3.TodoApplication.entity.Task;
 import vn.G3.TodoApplication.exception.AppException;
 import vn.G3.TodoApplication.exception.ErrorCode;
 import vn.G3.TodoApplication.mapper.category.CategoryMapper;
+import vn.G3.TodoApplication.mapper.task.TaskMapper;
 import vn.G3.TodoApplication.repository.CategoryRepository;
+import vn.G3.TodoApplication.repository.TaskRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +29,8 @@ import vn.G3.TodoApplication.repository.CategoryRepository;
 public class CategoryService {
     CategoryRepository categoryRepository;
     CategoryMapper categoryMapper;
+    TaskMapper taskMapper;
+    TaskRepository taskRepository;
 
     public CategoryResponse createCategory(CreateCategoryRequest request) {
         String name = request.getCategoryName();
@@ -64,6 +71,14 @@ public class CategoryService {
 
         List<Category> list = this.categoryRepository.findAll();
         List<CategoryResponse> result = this.categoryMapper.toListCategoryResponses(list);
+        return result;
+
+    }
+
+    public List<TaskResponse> getTaskFollowCategory(CategoryGetTask request) {
+        String name = request.getCategoryName();
+        List<Task> list = this.taskRepository.findByCategory_CategoryName(name);
+        List<TaskResponse> result = this.taskMapper.toListTaskResponses(list);
         return result;
 
     }

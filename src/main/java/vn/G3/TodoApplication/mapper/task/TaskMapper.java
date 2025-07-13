@@ -21,6 +21,7 @@ public interface TaskMapper {
     Task toTask(TaskUpdateRequest taskUpdateRequest);
 
     @Mapping(source = "user.username", target = "username")
+    @Mapping(source = "category.categoryName", target = "categoryName")
     TaskResponse toTaskResponse(Task task);
 
     List<TaskResponse> toListTaskResponses(List<Task> list);
